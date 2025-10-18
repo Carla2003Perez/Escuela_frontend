@@ -2,7 +2,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { LogOut, Home, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function Maestro() {
+export default function Admin() {
   const navigate = useNavigate();
 
   // Estados locales para UI
@@ -44,9 +44,9 @@ export default function Maestro() {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="w-64 bg-orange-300 text-white flex flex-col">
-        <div className="p-6 text-center font-bold text-2xl border-b border-orange-400">
-          Maestro
+      <div className="w-64 bg-blue-900 text-white flex flex-col">
+        <div className="p-6 text-center font-bold text-2xl border-b border-blue-700">
+          Directora
         </div>
 
         <nav className="flex-1 p-4 space-y-3">
@@ -54,7 +54,7 @@ export default function Maestro() {
             to="dashboard"
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2 rounded-lg ${
-                isActive ? "bg-orange-400" : "hover:bg-orange-400"
+                isActive ? "bg-blue-700" : "hover:bg-blue-800"
               }`
             }
           >
@@ -67,47 +67,47 @@ export default function Maestro() {
               onClick={() => setOpenUsuarios((v) => !v)}
               className="flex items-center gap-3 px-3 py-2 w-full rounded-lg hover:bg-blue-800"
             >
-              <Users size={20} /> Materias
+              <Users size={20} /> Gestión de Usuarios
               <span className="ml-auto">{openUsuarios ? "▲" : "▼"}</span>
             </button>
 
             {openUsuarios && (
               <div className="flex flex-col pl-8 mt-2 space-y-2">
                 <NavLink
-                  to="crearmaterias"
+                  to="crearusuario"
                   className={({ isActive }) =>
                     `px-3 py-1 rounded-lg ${
                       isActive ? "bg-blue-700" : "hover:bg-blue-800"
                     }`
                   }
                 >
-                  Crear Materias
+                  Crear usuarios
                 </NavLink>
                 <NavLink
-                  to="mismaterias"
+                  to="vistamaestros"
                   className={({ isActive }) =>
                     `px-3 py-1 rounded-lg ${
                       isActive ? "bg-blue-700" : "hover:bg-blue-800"
                     }`
                   }
                 >
-                  Mis materias
+                  Maestros
                 </NavLink>
-                
+                <NavLink
+                  to="vistaalumnos"
+                  className={({ isActive }) =>
+                    `px-3 py-1 rounded-lg ${
+                      isActive ? "bg-blue-700" : "hover:bg-blue-800"
+                    }`
+                  }
+                >
+                  Alumnos
+                </NavLink>
               </div>
             )}
           </div>
 
-          <NavLink
-            to="calificaciones"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg ${
-                isActive ? "bg-blue-700" : "hover:bg-blue-800"
-              }`
-            }
-          >
-            <Users size={20} /> calificaciones
-          </NavLink>
+    
 
           <NavLink
             to="perfil"

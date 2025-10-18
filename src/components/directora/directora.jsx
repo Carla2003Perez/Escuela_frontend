@@ -7,6 +7,7 @@ export default function Directora() {
 
   // Estados locales para UI
   const [openUsuarios, setOpenUsuarios] = useState(false);
+  const [openGrados, setOpenGrados] = useState(false);
   
   // Leer usuario desde localStorage
   const [usuario, setUsuario] = useState(null);
@@ -61,6 +62,33 @@ export default function Directora() {
             <Home size={20} /> Dashboard
           </NavLink>
 
+          {/* Gestión de  grados */}
+          <div>
+            <button
+              onClick={() => setOpenGrados((v) => !v)}
+              className="flex items-center gap-3 px-3 py-2 w-full rounded-lg hover:bg-blue-800"
+            >
+              <Users size={20} /> Gestión grados
+              <span className="ml-auto">{openGrados ? "▲" : "▼"}</span>
+            </button>
+
+            {openGrados && (
+              <div className="flex flex-col pl-8 mt-2 space-y-2">
+                <NavLink
+                  to="creargrados"
+                  className={({ isActive }) =>
+                    `px-3 py-1 rounded-lg ${
+                      isActive ? "bg-blue-700" : "hover:bg-blue-800"
+                    }`
+                  }
+                >
+                  Crear Grados
+                </NavLink>
+                
+              </div>
+            )}
+          </div>
+
           {/* Gestión de Usuarios con submenú */}
           <div>
             <button
@@ -106,6 +134,8 @@ export default function Directora() {
               </div>
             )}
           </div>
+
+           
 
           <NavLink
             to="eventos"

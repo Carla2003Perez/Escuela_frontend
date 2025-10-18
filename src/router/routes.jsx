@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import { routesAlumno } from "./alumno.routes";
 import { routesDirectora } from "./directora.routes";
 import { routesMaestro } from "./maestro.routes";
+import { routesAdmin } from "./admin.routes";
 
 const routes = [
   { path: "/", element: <Navigate to="/login" replace /> },
@@ -13,6 +14,7 @@ const routes = [
   ...routesAlumno,
   ...routesDirectora,
   ...routesMaestro,
+  ...routesAdmin,
   { path: "*", element: <NotFound /> },
 ];
 

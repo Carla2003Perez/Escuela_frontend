@@ -5,6 +5,7 @@ import Dashboard from "../components/directora/dashboard/dashboard";
 import Crearusuario from "../components/directora/Gestion/crearusuario";
 import { Navigate } from "react-router-dom";
 import Eventos from "../components/directora/Eventos/eventos";
+import CrearGrados from "../components/directora/grados/grados";
 import Vistamaestro from  "../components/directora/Gestion/Vistamaestro";
 import VistaAlumnos from  "../components/directora/Gestion/vistaAlumnos";
 import Perfil from "../components/directora/Perfil/perfil";
@@ -27,6 +28,7 @@ export const routesDirectora = [
       { path: "crearusuario", element: <Crearusuario /> },
       { path: "vistamaestros", element: <Vistamaestro /> },
       { path: "vistaalumnos", element: <VistaAlumnos /> },
+      { path: "creargrados", element: <CrearGrados /> },
 
       { path: "eventos", element: <Eventos /> },
       { path: "perfil", element: <Perfil /> },

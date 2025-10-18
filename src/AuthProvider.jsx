@@ -21,9 +21,10 @@ export const AuthProvider = ({ children }) => {
 
     const rol = userData.rol?.nombre?.toLowerCase() || userData.rol?.Nombre_Rol?.toLowerCase();
 
-    if (rol === "directora") navigate("/directora/dashboard");
+    if (rol === "admin") navigate("/admin/dashboard");
     else if (rol === "docente") navigate("/maestro/dashboard");
     else if (rol === "estudiante") navigate("/alumno/dashboard");
+    else if (rol === "directora") navigate("/directora/dashboard");
   };
 
   const logout = () => {
