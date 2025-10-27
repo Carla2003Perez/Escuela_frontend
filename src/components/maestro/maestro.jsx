@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function Maestro() {
   const navigate = useNavigate();
-
-  // Estados locales para UI
   const [openUsuarios, setOpenUsuarios] = useState(false);
-  
-  // Leer usuario desde localStorage
   const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
@@ -20,7 +16,6 @@ export default function Maestro() {
     setUsuario(JSON.parse(storedUser));
   }, [navigate]);
 
-  // Sincronizar logout entre pestañas
   useEffect(() => {
     const onStorage = (e) => {
       if (e.key === "app:logout") {
@@ -42,42 +37,41 @@ export default function Maestro() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen font-sans">
       {/* Sidebar */}
-      <div className="w-64 bg-orange-300 text-white flex flex-col">
-        <div className="p-6 text-center font-bold text-2xl border-b border-orange-400">
+      <aside className="w-64 bg-gradient-to-b from-blue-600 to-blue-500 text-white flex flex-col shadow-lg">
+        <div className="p-6 text-center font-bold text-3xl border-b border-blue-700">
           Maestro
         </div>
 
-        <nav className="flex-1 p-4 space-y-3">
+        <nav className="flex-1 p-4 space-y-2">
           <NavLink
             to="dashboard"
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg ${
-                isActive ? "bg-orange-400" : "hover:bg-orange-400"
+              `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                isActive ? "bg-blue-700" : "hover:bg-blue-600"
               }`
             }
           >
-            <Home size={20} /> Dashboard
+            <Home size={22} /> Dashboard
           </NavLink>
 
-          {/* Gestión de Usuarios con submenú */}
+          {/* Submenú Materias */}
           <div>
             <button
               onClick={() => setOpenUsuarios((v) => !v)}
-              className="flex items-center gap-3 px-3 py-2 w-full rounded-lg hover:bg-blue-800"
+              className="flex items-center gap-3 px-4 py-2 w-full rounded-lg hover:bg-blue-600 transition-colors font-medium"
             >
-              <Users size={20} /> Materias
-              <span className="ml-auto">{openUsuarios ? "▲" : "▼"}</span>
+              <Users size={22} /> Materias
             </button>
 
             {openUsuarios && (
-              <div className="flex flex-col pl-8 mt-2 space-y-2">
+              <div className="flex flex-col pl-8 mt-2 space-y-1">
                 <NavLink
                   to="crearmaterias"
                   className={({ isActive }) =>
-                    `px-3 py-1 rounded-lg ${
-                      isActive ? "bg-blue-700" : "hover:bg-blue-800"
+                    `px-3 py-1 rounded-lg text-sm transition-colors ${
+                      isActive ? "bg-blue-700" : "hover:bg-blue-600"
                     }`
                   }
                 >
@@ -86,48 +80,58 @@ export default function Maestro() {
                 <NavLink
                   to="mismaterias"
                   className={({ isActive }) =>
-                    `px-3 py-1 rounded-lg ${
-                      isActive ? "bg-blue-700" : "hover:bg-blue-800"
+                    `px-3 py-1 rounded-lg text-sm transition-colors ${
+                      isActive ? "bg-blue-700" : "hover:bg-blue-600"
                     }`
                   }
                 >
-                  Mis materias
+                  Mis Materias
                 </NavLink>
-                
               </div>
             )}
           </div>
 
           <NavLink
-            to="calificaciones"
+            to="tareas"
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg ${
-                isActive ? "bg-blue-700" : "hover:bg-blue-800"
+              `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                isActive ? "bg-blue-700" : "hover:bg-blue-600"
               }`
             }
           >
-            <Users size={20} /> calificaciones
+            <Users size={22} /> Tareas
+          </NavLink>
+
+          <NavLink
+            to="calificaciones"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                isActive ? "bg-blue-700" : "hover:bg-blue-600"
+              }`
+            }
+          >
+            <Users size={22} /> Calificaciones
           </NavLink>
 
           <NavLink
             to="perfil"
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg ${
-                isActive ? "bg-blue-700" : "hover:bg-blue-800"
+              `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                isActive ? "bg-blue-700" : "hover:bg-blue-600"
               }`
             }
           >
-            <Users size={20} /> Perfil
+            <Users size={22} /> Perfil
           </NavLink>
         </nav>
 
         <button
-          className="p-4 flex items-center justify-center gap-2 bg-blue-800 hover:bg-blue-700"
+          className="m-4 p-3 flex items-center justify-center gap-2 bg-red-600 rounded-lg hover:bg-red-500 transition-colors"
           onClick={logout}
         >
-          <LogOut size={18} /> Cerrar sesión
+          <LogOut size={20} /> Cerrar sesión
         </button>
-      </div>
+      </aside>
 
       {/* Main Content */}
       <main className="flex-1 p-6 bg-gray-100 overflow-auto">

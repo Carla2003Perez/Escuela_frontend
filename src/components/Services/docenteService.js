@@ -1,35 +1,26 @@
-const API_URL = 'http://localhost:3001/api/docente';
+const API_URL = "http://localhost:3001/api/docente";
 
-export const crearDocente = async (docenteData) => {
+export async function crearDocente(docenteData) {
   try {
-    const response = await fetch(`${API_URL}/directora`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(docenteData),
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Error al crear docente');
+      const error = await response.json();
+      throw new Error(error.message || "Error al crear docente");
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error creando docente:', error);
+    console.error("Error en crearDocente:", error);
     throw error;
   }
-};
+}
 
-export const obtenerDocentes = async () => {
-  try {
-    const response = await fetch(`${API_URL}`);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error obteniendo docentes:', error);
-    throw error;
-  }
-};
+export async function obtenerDocentes() {
+  const response = await fetch(API_URL);
+  return response.json();
+}

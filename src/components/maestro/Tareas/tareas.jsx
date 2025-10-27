@@ -1,4 +1,4 @@
-export default function Crearmaterias() {
+export default function Tareas() {
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       {/* Título */}
