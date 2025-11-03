@@ -1,3 +1,4 @@
+//crearusuario.jsx
 import { useState, useEffect } from "react";
 import { crearEstudiante, obtenerEstudiantes } from "../../Services/estudianteService";
 import { crearDocente, obtenerDocentes } from "../../Services/docenteService";
@@ -6,6 +7,7 @@ import { obtenerGrados } from "../../Services/gradoService";
 const camposIniciales = {
   estudiante: {
     Nombre_estudiante: "",
+    apellido_estudiante: "",
     codigo_estudiante: "",
     grado: "",
     fecha_nacimiento: "",
@@ -62,11 +64,16 @@ export default function Crearusuario() {
     try {
       let data;
       if (tipoUsuario === "estudiante") {
-        data = await crearEstudiante(formData.estudiante);
+        // Se envían solo los campos permitidos por el DTO
+        const { Nombre_estudiante, apellido_estudiante, codigo_estudiante, grado, fecha_nacimiento, responsable } = formData.estudiante;
+        data = await crearEstudiante({ Nombre_estudiante, apellido_estudiante, codigo_estudiante, grado, fecha_nacimiento, responsable });
+
         setFormData((prev) => ({ ...prev, estudiante: camposIniciales.estudiante }));
         setMensaje(`✅ Estudiante creado con éxito`);
       } else {
-        data = await crearDocente(formData.docente);
+        const { nombre_docente, apellido, telefono, fecha_ingreso } = formData.docente;
+        data = await crearDocente({ nombre_docente, apellido, telefono, fecha_ingreso });
+
         setFormData((prev) => ({ ...prev, docente: camposIniciales.docente }));
         setMensaje(`✅ Docente creado con éxito`);
       }
@@ -88,14 +95,13 @@ export default function Crearusuario() {
 
       setError("");
     } catch (err) {
-      console.error("Error en el envío:", err);
+      console.error("Error al crear usuario:", err);
       setError(err.message || "Ocurrió un error al crear el usuario.");
       setMensaje("");
       setCredenciales(null);
     }
   };
 
-  // 🔹 Interfaz
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-8 border border-gray-100">
       <h1 className="text-3xl font-bold text-blue-900 mb-6 text-center">Crear Usuarios</h1>
@@ -151,7 +157,6 @@ export default function Crearusuario() {
               onChange={handleChange}
               className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 outline-none"
             />
-
             <input
               type="text"
               name="apellido_estudiante"
@@ -160,8 +165,6 @@ export default function Crearusuario() {
               onChange={handleChange}
               className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 outline-none"
             />
-
-
             <input
               type="text"
               name="codigo_estudiante"
@@ -179,9 +182,8 @@ export default function Crearusuario() {
               <option value="">Seleccione un grado</option>
               {grados.map((g) => (
                 <option key={g.id_grado} value={g.id_grado}>
-  {g.nombre_grado}
-</option>
-
+                  {g.nombre_grado}
+                </option>
               ))}
             </select>
             <input
@@ -238,8 +240,7 @@ export default function Crearusuario() {
 
         <button
           type="submit"
-          className="bg-blue-700 text-white px-6 py-3 rounded-lg w-full font-semibold 
-                     hover:bg-blue-800 shadow-md transition-transform transform hover:scale-[1.02]"
+          className="bg-blue-700 text-white px-6 py-3 rounded-lg w-full font-semibold hover:bg-blue-800 shadow-md transition-transform transform hover:scale-[1.02]"
         >
           Crear {tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)}
         </button>

@@ -1,14 +1,22 @@
-import React from "react";
 import Protected from "./Protected";
-import AlumnoDashboard from "../components/alumno/dashboard/dashboard";
+import Dashboard from "../components/alumno/dashboard/dashboard";
+import Alumno from "../components/alumno/alumno";
+import { Navigate } from "react-router-dom";
 
 export const routesAlumno = [
   {
     path: "/alumno",
     element: (
-      <Protected role="alumno">
-        <AlumnoDashboard />
+      <Protected 
+      allow="alumno">
+        <Alumno />
       </Protected>
     ),
+    children: [
+      { index: true, element: <Navigate to="dashboard" replace /> },
+       // Dashboard
+            { path: "dashboard", element: <Dashboard /> },
+          ],
+
   },
 ];
