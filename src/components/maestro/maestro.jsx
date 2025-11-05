@@ -1,40 +1,12 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { LogOut, Home, Users } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../AuthProvider";
 
 export default function Maestro() {
-  const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext); // Usa el contexto
   const [openUsuarios, setOpenUsuarios] = useState(false);
-  const [usuario, setUsuario] = useState(null);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (!storedUser) {
-      navigate("/login", { replace: true });
-      return;
-    }
-    setUsuario(JSON.parse(storedUser));
-  }, [navigate]);
-
-  useEffect(() => {
-    const onStorage = (e) => {
-      if (e.key === "app:logout") {
-        setOpenUsuarios(false);
-        navigate("/login", { replace: true });
-      }
-    };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, [navigate]);
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("role");
-    localStorage.setItem("app:logout", String(Date.now()));
-    setOpenUsuarios(false);
-    navigate("/login", { replace: true });
-  };
 
   return (
     <div className="flex h-screen font-sans">
@@ -98,7 +70,7 @@ export default function Maestro() {
                 isActive ? "bg-blue-700" : "hover:bg-blue-600"
               }`
             }
-          >
+ Salomon>
             <Users size={22} /> Tareas
           </NavLink>
 
@@ -125,9 +97,10 @@ export default function Maestro() {
           </NavLink>
         </nav>
 
+        {/* Botón de logout */}
         <button
           className="m-4 p-3 flex items-center justify-center gap-2 bg-red-600 rounded-lg hover:bg-red-500 transition-colors"
-          onClick={logout}
+          onClick={logout} // Usa el logout del contexto
         >
           <LogOut size={20} /> Cerrar sesión
         </button>
@@ -135,13 +108,7 @@ export default function Maestro() {
 
       {/* Main Content */}
       <main className="flex-1 p-6 bg-gray-100 overflow-auto">
-        {usuario ? (
-          <Outlet />
-        ) : (
-          <p className="text-center mt-20 text-gray-500">
-            Cargando información del usuario...
-          </p>
-        )}
+        <Outlet />
       </main>
     </div>
   );

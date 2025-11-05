@@ -8,10 +8,10 @@ export default function Directora() {
   const [openUsuarios, setOpenUsuarios] = useState(false);
   const [openGrados, setOpenGrados] = useState(false);
 
-  // NO useEffect, NO localStorage, NO navigate
+
 
   return (
-    <div className="flex h-screen bg-blue-200">
+    <div className="flex h-screen bg-blue-600">
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-b from-blue-900 to-blue-700 text-white shadow-lg flex flex-col">
         <div className="p-6 text-center border-b border-orange-200">
