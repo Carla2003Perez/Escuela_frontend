@@ -1,3 +1,4 @@
+// AuthProvider.jsx
 import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,34 +8,46 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // 🔹 Cargar sesión guardada al recargar la página
+  // Cargar al inicio
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    const stored = localStorage.getItem("user");
+    if (stored) setUser(JSON.parse(stored));
   }, []);
+
+  // Restaurar al retroceder
+  useEffect(() => {
+    const handlePop = () => {
+      if (!user) {
+        const stored = localStorage.getItem("user");
+        if (stored) setUser(JSON.parse(stored));
+      }
+    };
+    window.addEventListener("popstate", handlePop);
+    return () => window.removeEventListener("popstate", handlePop);
+  }, [user]);
 
   const login = (userData) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
+    const rol = (userData.rol?.nombre || userData.rol?.Nombre_Rol || "").toLowerCase();
 
-    const rol = userData.rol?.nombre?.toLowerCase() || userData.rol?.Nombre_Rol?.toLowerCase();
+    const redirect = {
+      docente: "/maestro/dashboard",
+      estudiante: "/alumno/dashboard",
+      directora: "/directora/dashboard",
+    }[rol];
 
-    if (rol === "admin") navigate("/admin/dashboard");
-    else if (rol === "docente") navigate("/maestro/dashboard");
-    else if (rol === "estudiante") navigate("/alumno/dashboard");
-    else if (rol === "directora") navigate("/directora/dashboard");
+    if (redirect) navigate(redirect, { replace: true });
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, setUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -23,7 +23,32 @@ export const crearEstudiante = async (datos) => {
 };
 
 
+
+export async function inactivarEstudiante(id) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Error al inactivar estudiante");
+  return res.text();
+}
+  
+
+export const obtenerTotalEstudiantes = async () => {
+  const res = await fetch(`${API_URL}/total`);
+  if (!res.ok) throw new Error("Error al obtener total de estudiantes");
+  return await res.json(); // { total: 5 }
+};
+
 export async function obtenerEstudiantes() {
-  const response = await fetch(API_URL);
-  return response.json();
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/lista`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Error al obtener estudiantes");
+  return res.json();
 }

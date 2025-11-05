@@ -22,8 +22,13 @@ export const crearDocente = async (datos) => {
   }
 };
 
-
 export async function obtenerDocentes() {
   const response = await fetch(API_URL);
   return response.json();
 }
+
+export const obtenerTotalDocentes = async () => {
+  const res = await fetch(`${API_URL}/total`);
+  if (!res.ok) throw new Error("Error al obtener total de docentes");
+  return await res.json(); // { total: X }
+};

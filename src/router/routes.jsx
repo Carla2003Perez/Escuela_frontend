@@ -5,12 +5,13 @@ import { routesAlumno } from "./alumno.routes";
 import { routesDirectora } from "./directora.routes";
 import { routesMaestro } from "./maestro.routes";
 import { routesAdmin } from "./admin.routes";
+import GuestOnly from "./GuestOnly";
 
 const routes = [
   { path: "/", element: <Navigate to="/login" replace /> },
   
    // Ruta pública para login
-  { path: "/login", element: <Login /> },
+  { path: "/login", element: <GuestOnly><Login /></GuestOnly> },
   ...routesAlumno,
   ...routesDirectora,
   ...routesMaestro,

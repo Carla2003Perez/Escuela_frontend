@@ -1,65 +1,107 @@
-export default function VistaAlumnos() {
+import { useEffect, useState } from "react";
+import { obtenerEstudiantes, inactivarEstudiante } from "../../Services/estudianteService";
+
+export default function VistaAlumno() {
+  const [estudiantes, setEstudiantes] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    cargarEstudiantes();
+  }, []);
+
+  const cargarEstudiantes = async () => {
+    try {
+      const data = await obtenerEstudiantes();
+      setEstudiantes(data);
+    } catch (err) {
+      console.error(err);
+      setError("No se pudieron cargar los estudiantes");
+    }
+  };
+
+  const handleInactivar = async (id) => {
+    if (!window.confirm("¿Deseas inactivar esta cuenta de estudiante?")) return;
+
+    try {
+      await inactivarEstudiante(id);
+      alert("Cuenta inactivada correctamente");
+      cargarEstudiantes();
+    } catch (err) {
+      console.error(err);
+      alert("Error al inactivar la cuenta");
+    }
+  };
+
+  const handleEditar = (id) => {
+    // Aquí podrías redirigir a una vista de edición o abrir un modal
+    alert(`Editar estudiante con ID: ${id}`);
+  };
+
   return (
-    <div className="p-8 min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
-      {/* Encabezado */}
-      <div className="mb-10 text-center">
-        <h1 className="text-4xl font-extrabold text-blue-800 drop-shadow-md">
-          Alumnos por Grado
-        </h1>
-       
-      </div>
+    <div className="p-6">
+      <h1 className="text-2xl font-semibold text-indigo-700 mb-4">
+        Lista de Estudiantes
+      </h1>
 
-      {/* Grado 1 */}
-      <div className="bg-white shadow-lg rounded-2xl p-6 border-l-4 border-blue-500 mb-8">
-        <h2 className="text-2xl font-semibold text-blue-700 mb-4">Primer Grado</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Alumno 1 */}
-          <div className="p-4 bg-blue-50 rounded-xl border border-blue-200 shadow-sm hover:shadow-md transition-all">
-            <p className="font-semibold text-gray-800">Juan Pérez</p>
-            <p className="text-sm text-gray-600">Código: 001</p>
-            <button className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg shadow transition-all">
-              Ver detalles
-            </button>
-          </div>
-          {/* Alumno 2 */}
-          <div className="p-4 bg-blue-50 rounded-xl border border-blue-200 shadow-sm hover:shadow-md transition-all">
-            <p className="font-semibold text-gray-800">Eli María Godoy</p>
-            <p className="text-sm text-gray-600">Código: 002</p>
-            <button className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg shadow transition-all">
-              Ver detalles
-            </button>
-          </div>
-         
-        </div>
-      </div>
+      {error && <p className="text-red-600">{error}</p>}
 
-      {/* Grado 2 */}
-      <div className="bg-white shadow-lg rounded-2xl p-6 border-l-4 border-green-500 mb-8">
-        <h2 className="text-2xl font-semibold text-green-700 mb-4">Segundo Grado</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-green-50 rounded-xl border border-green-200 shadow-sm hover:shadow-md transition-all">
-            <p className="font-semibold text-gray-800">Ana Ramírez</p>
-            <p className="text-sm text-gray-600">Código: 004</p>
-            <button className="mt-3 bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg shadow transition-all">
-              Ver detalles
-            </button>
-          </div>
-          
-        </div>
-      </div>
+      <div className="overflow-x-auto rounded-lg shadow-lg">
+        <table className="w-full border-collapse border border-gray-300">
+          <thead className="bg-indigo-600 text-white">
+            <tr>
+              <th className="py-2 px-3">#</th>
+              <th className="py-2 px-3 text-left">Nombre</th>
+              <th className="py-2 px-3 text-left">Código</th>
+              <th className="py-2 px-3 text-left">Grado</th>
+              <th className="py-2 px-3 text-left">Fecha de Nacimiento</th>
+              <th className="py-2 px-3 text-left">Responsable</th>
+              <th className="py-2 px-3 text-left">Correo</th>
+              <th className="py-2 px-3 text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {estudiantes.length > 0 ? (
+              estudiantes.map((e, index) => (
+                <tr
+                  key={e.id_estudiante}
+                  className="border-t hover:bg-gray-100 transition-all"
+                >
+                  <td className="py-2 px-3 text-center">{index + 1}</td>
+                  <td className="py-2 px-3">{e.Nombre_estudiante}</td>
+                  <td className="py-2 px-3">{e.codigo_estudiante}</td>
+                  <td className="py-2 px-3">{e.grado?.nombre_grado || "Sin grado"}</td>
 
-      {/* Grado 3 */}
-      <div className="bg-white shadow-lg rounded-2xl p-6 border-l-4 border-yellow-500 mb-8">
-        <h2 className="text-2xl font-semibold text-yellow-700 mb-4">Tercer Grado</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-yellow-50 rounded-xl border border-yellow-200 shadow-sm hover:shadow-md transition-all">
-            <p className="font-semibold text-gray-800">Sofía Morales</p>
-            <p className="text-sm text-gray-600">Código: 006</p>
-            <button className="mt-3 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-1.5 rounded-lg shadow transition-all">
-              Ver detalles
-            </button>
-          </div>
-        </div>
+                  <td className="py-2 px-3">{e.fecha_nacimiento}</td>
+                  <td className="py-2 px-3">{e.responsable}</td>
+                  <td className="py-2 px-3">{e.usuario?.correo}</td>
+                  <td className="py-2 px-3 text-center">
+                    <button
+                      onClick={() => handleEditar(e.id_estudiante)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded mr-2 text-sm"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleInactivar(e.id_estudiante)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+                    >
+                      Inactivar
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="8"
+                  className="text-center py-4 text-gray-500 italic"
+                >
+                  No hay estudiantes registrados
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

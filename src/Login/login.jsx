@@ -32,6 +32,8 @@ export default function Login() {
       // Guardar usuario y token en localStorage
       localStorage.setItem("token", data.access_token);
       localStorage.setItem("user", JSON.stringify(data.usuario));
+   
+
 
       // Actualizar contexto con el usuario
       login(data.usuario);

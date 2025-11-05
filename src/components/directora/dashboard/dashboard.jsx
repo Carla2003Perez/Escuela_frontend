@@ -1,6 +1,12 @@
+import { useEffect, useState } from "react";
 import { Users, BookOpen, FileText } from "lucide-react";
+import { obtenerTotalEstudiantes } from "../../Services/estudianteService";
+import { obtenerTotalDocentes } from "../../Services/docenteService";
 
 export default function Dashboard() {
+  const [totalEstudiantes, setTotalEstudiantes] = useState(0);
+  const [totalDocentes, setTotalDocentes] = useState(0);
+
   const fechaActual = new Date().toLocaleDateString("es-GT", {
     weekday: "long",
     year: "numeric",
@@ -8,13 +14,26 @@ export default function Dashboard() {
     day: "numeric",
   });
 
+  useEffect(() => {
+    const cargarDatos = async () => {
+      try {
+        const estudiantesData = await obtenerTotalEstudiantes();
+        const docentesData = await obtenerTotalDocentes();
+
+        setTotalEstudiantes(estudiantesData.total);
+        setTotalDocentes(docentesData.total);
+      } catch (error) {
+        console.error("Error cargando datos del dashboard:", error);
+      }
+    };
+    cargarDatos();
+  }, []);
+
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       {/* Encabezado */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-blue-900 mb-2">
-          DASHBOARD
-        </h1>
+        <h1 className="text-3xl font-bold text-blue-900 mb-2">DASHBOARD</h1>
         <p className="text-gray-600 text-lg">
           Bienvenida al sistema académico del INEB Telesecundaria El Astillero.
         </p>
@@ -29,7 +48,7 @@ export default function Dashboard() {
             <Users size={26} className="text-blue-700" />
           </div>
           <h2 className="text-3xl font-extrabold text-blue-900 mb-2 text-center">
-            93
+            {totalEstudiantes}
           </h2>
           <p className="text-gray-700 font-medium text-center">
             Estudiantes Matriculados
@@ -42,7 +61,7 @@ export default function Dashboard() {
             <BookOpen size={26} className="text-green-700" />
           </div>
           <h2 className="text-3xl font-extrabold text-green-900 mb-2 text-center">
-            8
+            {totalDocentes}
           </h2>
           <p className="text-gray-700 font-medium text-center">
             Docentes Activos
@@ -55,15 +74,13 @@ export default function Dashboard() {
             <FileText size={26} className="text-yellow-600" />
           </div>
           <h2 className="text-3xl font-extrabold text-yellow-800 mb-2 text-center">
-            12
+            0
           </h2>
           <p className="text-gray-700 font-medium text-center">
             Reportes Generados
           </p>
         </div>
       </div>
-
-     
     </div>
   );
 }

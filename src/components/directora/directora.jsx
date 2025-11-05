@@ -1,45 +1,21 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { LogOut, Home, Users, BookOpen, Calendar, ChevronDown, ChevronUp } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../AuthProvider"; // ← Importa el contexto
 
 export default function Directora() {
-  const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext); // ← Usa el contexto
   const [openUsuarios, setOpenUsuarios] = useState(false);
   const [openGrados, setOpenGrados] = useState(false);
-  const [usuario, setUsuario] = useState(null);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (!storedUser) {
-      navigate("/login", { replace: true });
-      return;
-    }
-    setUsuario(JSON.parse(storedUser));
-  }, [navigate]);
-
-  useEffect(() => {
-    const onStorage = (e) => {
-      if (e.key === "app:logout") {
-        navigate("/login", { replace: true });
-      }
-    };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, [navigate]);
-
-  const logout = () => {
-    localStorage.clear();
-    localStorage.setItem("app:logout", String(Date.now()));
-    navigate("/login", { replace: true });
-  };
+  // NO useEffect, NO localStorage, NO navigate
 
   return (
-    <div className="flex h-screen bg-orange-200">
+    <div className="flex h-screen bg-blue-200">
       {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-orange-400 to-orange-300 text-white shadow-lg flex flex-col">
+      <aside className="w-64 bg-gradient-to-b from-blue-900 to-blue-700 text-white shadow-lg flex flex-col">
         <div className="p-6 text-center border-b border-orange-200">
           <h1 className="text-2xl font-bold">Directora</h1>
-          
         </div>
 
         <nav className="flex-1 p-4 space-y-3 overflow-y-auto">
@@ -55,7 +31,6 @@ export default function Directora() {
           >
             <Home size={20} /> Inicio
           </NavLink>
-
 
           {/* Gestión de usuarios */}
           <div>
@@ -75,40 +50,13 @@ export default function Directora() {
               }`}
             >
               <div className="flex flex-col pl-8 mt-2 space-y-2">
-                <NavLink
-                  to="crearusuario"
-                  className={({ isActive }) =>
-                    `px-3 py-1 rounded-lg transition-all ${
-                      isActive
-                        ? "bg-orange-600 text-white"
-                        : "hover:bg-orange-700 text-blue-100"
-                    }`
-                  }
-                >
+                <NavLink to="crearusuario" className={({ isActive }) => `px-3 py-1 rounded-lg transition-all ${isActive ? "bg-orange-600 text-white" : "hover:bg-orange-700 text-blue-100"}`}>
                   Crear Usuarios
                 </NavLink>
-                <NavLink
-                  to="vistamaestros"
-                  className={({ isActive }) =>
-                    `px-3 py-1 rounded-lg ${
-                      isActive
-                         ? "bg-orange-500 text-white font-semibold"
-                  : "hover:bg-orange-600 text-blue-100"
-                    }`
-                  }
-                >
+                <NavLink to="vistamaestros" className={({ isActive }) => `px-3 py-1 rounded-lg ${isActive ? "bg-orange-500 text-white font-semibold" : "hover:bg-orange-600 text-blue-100"}`}>
                   Maestros
                 </NavLink>
-                <NavLink
-                  to="vistaalumnos"
-                  className={({ isActive }) =>
-                    `px-3 py-1 rounded-lg ${
-                      isActive
-                         ? "bg-orange-500 text-white font-semibold"
-                  : "hover:bg-orange-600 text-blue-100"
-                    }`
-                  }
-                >
+                <NavLink to="vistaalumnos" className={({ isActive }) => `px-3 py-1 rounded-lg ${isActive ? "bg-orange-500 text-white font-semibold" : "hover:bg-orange-600 text-blue-100"}`}>
                   Alumnos
                 </NavLink>
               </div>
@@ -133,31 +81,18 @@ export default function Directora() {
               }`}
             >
               <div className="flex flex-col pl-8 mt-2 space-y-2">
-                <NavLink
-                  to="creargrados"
-                  className={({ isActive }) =>
-                    `px-3 py-1 rounded-lg transition-all ${
-                      isActive
-                        ? "bg-orange-600 text-white"
-                        : "hover:bg-orange-700 text-blue-100"
-                    }`
-                  }
-                >
+                <NavLink to="creargrados" className={({ isActive }) => `px-3 py-1 rounded-lg transition-all ${isActive ? "bg-orange-600 text-white" : "hover:bg-orange-700 text-blue-100"}`}>
                   Crear Grados
                 </NavLink>
               </div>
             </div>
           </div>
 
-          
-
           <NavLink
             to="eventos"
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${
-                isActive
-                   ? "bg-orange-500 text-white font-semibold"
-                  : "hover:bg-orange-600 text-blue-100"
+                isActive ? "bg-orange-500 text-white font-semibold" : "hover:bg-orange-600 text-blue-100"
               }`
             }
           >
@@ -168,9 +103,7 @@ export default function Directora() {
             to="perfil"
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${
-                isActive
-                  ? "bg-orange-500 text-white font-semibold"
-                  : "hover:bg-orange-600 text-blue-100"
+                isActive ? "bg-orange-500 text-white font-semibold" : "hover:bg-orange-600 text-blue-100"
               }`
             }
           >
@@ -178,23 +111,22 @@ export default function Directora() {
           </NavLink>
         </nav>
 
+        {/* Botón de logout */}
         <button
-  onClick={logout}
-  className="m-4 flex items-center justify-center gap-2 py-2.5 rounded-full 
-             bg-gradient-to-r from-red-600 to-red-500 text-white font-semibold
-             shadow-md hover:from-red-700 hover:to-red-600 transition-all"
->
-  <LogOut size={18} /> Cerrar Sesión
-</button>
-
+          onClick={logout} // ← Usa la función del contexto
+          className="m-4 flex items-center justify-center gap-2 py-2.5 rounded-full 
+                     bg-gradient-to-r from-red-600 to-red-500 text-white font-semibold
+                     shadow-md hover:from-red-700 hover:to-red-600 transition-all"
+        >
+          <LogOut size={18} /> Cerrar Sesión
+        </button>
       </aside>
 
       {/* Contenido principal */}
       <main className="flex-1 flex flex-col">
-        {/* Encabezado */}
         <header className="bg-orange-400 shadow-sm p-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-white">
-            Bienvenida, {usuario?.nombre || "Directora"}
+            Bienvenida, {user?.nombre || "Directora"}
           </h2>
           <div className="text-sm text-white">
             INEB Telesecundaria El Astillero
@@ -202,13 +134,7 @@ export default function Directora() {
         </header>
 
         <section className="flex-1 p-6 bg-gray-100 overflow-auto">
-          {usuario ? (
-            <Outlet />
-          ) : (
-            <p className="text-center mt-20 text-gray-500">
-              Cargando información del usuario...
-            </p>
-          )}
+          <Outlet />
         </section>
       </main>
     </div>
