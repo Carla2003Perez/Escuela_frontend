@@ -11,10 +11,10 @@ export default function Directora() {
 
 
   return (
-    <div className="flex h-screen bg-blue-600">
+    <div className="flex h-screen bg-orange-400">
       {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-blue-900 to-blue-700 text-white shadow-lg flex flex-col">
-        <div className="p-6 text-center border-b border-orange-200">
+      <aside className="w-64 bg-gradient-to-b from-orange-400 to-orange-300 text-white shadow-lg flex flex-col">
+        <div className="p-6 text-center border-b border-blue-200">
           <h1 className="text-2xl font-bold">Directora</h1>
         </div>
 
@@ -124,7 +124,7 @@ export default function Directora() {
 
       {/* Contenido principal */}
       <main className="flex-1 flex flex-col">
-        <header className="bg-orange-400 shadow-sm p-4 flex items-center justify-between">
+        <header className="bg-blue-850 shadow-sm p-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-white">
             Bienvenida, {user?.nombre || "Directora"}
           </h2>

@@ -8,6 +8,7 @@ import Calificaciones from "../components/maestro/calificaciones/calificaciones"
 import Tareas from "../components/maestro/Tareas/tareas";
 import Perfil from "../components/maestro/Perfil/Perfil";
 import { Navigate } from "react-router-dom";
+import Grado from "../components/maestro/grado/grado";
 
 export const routesMaestro = [
   {
@@ -22,6 +23,9 @@ export const routesMaestro = [
 
       // Dashboard
       { path: "dashboard", element: <Dashboard /> },
+     
+      { path: "grado/:id", element: <Grado />},
+      
       { path: "crearmaterias", element: <Crearmaterias /> },
       { path: "mismaterias", element: <Mismaterias /> },
       { path: "tareas", element: <Tareas /> },
