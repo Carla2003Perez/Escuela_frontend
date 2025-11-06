@@ -25,7 +25,7 @@ const Protected = ({ allow, children }) => {
   ).toLowerCase();
 
   if (rol !== allow.toLowerCase()) {
-   <Navigate to="/login" replace />;
+    <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;

@@ -51,7 +51,7 @@ export default function Login() {
           <p className="slogan">“Educando para un futuro mejor”</p>
         </div>
 
-        {error && <p className="text-red-600 text-sm text-center mb-3">{error}</p>}
+       
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
@@ -88,6 +88,8 @@ export default function Login() {
           >
             Ingresar
           </button>
+
+           {error && <p className="text-red-600 text-sm text-center mb-3">{error}</p>}
         </form>
 
         <p className="text-center text-sm text-gray-600 mt-8">
