@@ -1,3 +1,4 @@
+//crearusuario.jsx
 import { useState, useEffect } from "react";
 import {
   crearEstudiante,
@@ -78,15 +79,26 @@ export default function Crearusuario() {
           Nombre_estudiante,
           apellido_estudiante,
           codigo_estudiante,
-          id_grado,
+          grado,
           fecha_nacimiento,
           responsable,
         } = formData.estudiante;
+
+        // Validar que los campos requeridos estén llenos
+        if (!Nombre_estudiante || !apellido_estudiante) {
+          setError("Por favor completa nombre y apellido del estudiante");
+          return;
+        }
+        if (!grado) {
+          setError("Por favor selecciona un grado");
+          return;
+        }
+        
         data = await crearEstudiante({
           Nombre_estudiante,
           apellido_estudiante,
           codigo_estudiante,
-          grado,
+          id_grado: grado,
           fecha_nacimiento,
           responsable,
         });
@@ -197,8 +209,12 @@ export default function Crearusuario() {
                 name="grado"
                 value={formData.estudiante.grado}
                 onChange={handleChange}
-                className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 outline-none"
+                required
+                className={`border p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-400 outline-none ${
+                  !formData.estudiante.grado ? 'border-red-500' : 'border-gray-300'
+                }`}
               >
+              
                 <option value="">Seleccione un grado</option>
                 {grados.map((g) => (
                   <option key={g.id_grado} value={g.id_grado}>
@@ -206,6 +222,7 @@ export default function Crearusuario() {
                   </option>
                 ))}
               </select>
+              
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input
