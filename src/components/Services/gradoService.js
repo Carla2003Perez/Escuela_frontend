@@ -31,6 +31,7 @@ export const asignarDocenteAGrado = async (gradoId, docenteId) => {
 };
 
 
+
 //obtener grado para el maestro
 export const obtenerGradoPorDocente = async (id_docente) => {
   const response = await fetch(`${API_URL}/${id_docente}`);
