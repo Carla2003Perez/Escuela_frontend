@@ -1,3 +1,4 @@
+//gradoService.js
 const API_URL = "http://localhost:3001/api/grados"; // Cambia según tu backend
 
 export const obtenerGrados = async () => {
@@ -34,7 +35,7 @@ export const asignarDocenteAGrado = async (gradoId, docenteId) => {
 
 //obtener grado para el maestro
 export const obtenerGradoPorDocente = async (id_docente) => {
-  const response = await fetch(`${API_URL}/${id_docente}`);
+  const response = await fetch(`${API_URL}/docente/${id_docente}`);
   
   if (!response.ok) {
     const error = await response.text();
@@ -52,4 +53,15 @@ export const obtenerGradoPorId = async (id_grado) => {
     throw new Error(error || "Grado no encontrado");
   }
   return await response.json();
+};
+
+export const obtenerGradosAsignados = async (id_docente) => {
+  console.log("Buscando grados para docente:", id_docente);
+  const response = await fetch(`${API_URL}/asignados/docente/${id_docente}`);
+  console.log("➡️ Respuesta del servidor:", response);
+  const data = await response.json();
+  console.log("📦 Grados recibidos:", data);
+  
+  if (!response.ok) throw new Error("Error al cargar grados");
+  return data;
 };
